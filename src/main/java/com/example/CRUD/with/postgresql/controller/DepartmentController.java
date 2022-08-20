@@ -19,7 +19,7 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/api/v1")
+@RequestMapping(value = "/api/v1/departments")
 public class DepartmentController {
 
     @Autowired
@@ -28,13 +28,13 @@ public class DepartmentController {
     @Autowired
     private DepartmentMapperImpl departmentMapper;
 
-    @GetMapping("/department")
+    @GetMapping
     public ResponseEntity<List<DepartmentDTO>> getAllDepartments() {
         List<DepartmentDTO> departmentDTOList = departmentMapper.toDepartmentDTOs(departmentService.getAllDepartment());
         return ResponseEntity.ok(departmentDTOList);
     }
 
-    @GetMapping("/department/{id}")
+    @GetMapping("/departments/{id}")
     public ResponseEntity<DepartmentDTO> getDepartmentById(@PathVariable Long id)
             throws ResourceNotFound {
         Optional<Department> department = departmentService.getDepartmentById(id);
@@ -49,7 +49,7 @@ public class DepartmentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(departmentDTO);
     }
 
-    @PutMapping("/department/{id}")
+    @PutMapping("/departments/{id}")
     public ResponseEntity<DepartmentDTO> update(@PathVariable Long id,	@RequestBody DepartmentDTO departmentDTO) throws ResourceNotFound {
         Department department = departmentMapper.toDepartment(departmentDTO);
         Department departmentId = departmentService.getDepartmentById(id)
@@ -60,7 +60,7 @@ public class DepartmentController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(departmentDTO);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("departments/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         departmentService.delete(id);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();

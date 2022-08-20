@@ -4,9 +4,7 @@ package com.example.CRUD.with.postgresql.model;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,4 +43,5 @@ public class Employee {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private List<Role> roles = new ArrayList<>();
+
 }

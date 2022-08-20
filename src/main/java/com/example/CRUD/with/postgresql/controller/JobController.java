@@ -20,7 +20,7 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/api/v1")
+@RequestMapping(value = "/api/v3/jobs")
 public class JobController {
 
     @Autowired
@@ -35,7 +35,7 @@ public class JobController {
         return ResponseEntity.ok(jobDTOList);
     }
 
-    @GetMapping("/job/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<JobDTO> getJobById(@PathVariable(value = "id") Long jobId)
             throws ResourceNotFound {
         Optional<Job> job = jobService.getJobById(jobId);
@@ -43,14 +43,14 @@ public class JobController {
         return ResponseEntity.ok(jobDTO);
     }
 
-    @PostMapping("/job")
+    @PostMapping
     public ResponseEntity<JobDTO> create(@RequestBody JobDTO jobDTO) {
         Job job = jobMapper.toJob(jobDTO);
         jobService.createJob(job);
         return ResponseEntity.status(HttpStatus.CREATED).body(jobDTO);
     }
 
-    @PutMapping("/job/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<JobDTO> update(@PathVariable Long id,	@RequestBody JobDTO jobDTO) throws ResourceNotFound {
         Job job = jobMapper.toJob(jobDTO);
         Job jobId = jobService.getJobById(id)
@@ -61,7 +61,7 @@ public class JobController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(jobDTO);
     }
 
-    @DeleteMapping("/job/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         jobService.delete(id);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();

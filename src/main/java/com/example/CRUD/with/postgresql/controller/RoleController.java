@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-//@Slf4j
 @RequiredArgsConstructor
 @RestController
+@RequestMapping(value = "/api/v4/roles")
 public class RoleController {
 
     @Autowired
@@ -33,7 +33,14 @@ public class RoleController {
         return ResponseEntity.ok(roleDTOS);
     }
 
-    @GetMapping("/role/{id}")
+    @PostMapping
+    public ResponseEntity<RoleDTO> create(@RequestBody RoleDTO roleDTO) {
+        Role role = roleMapper.toRole(roleDTO);
+        roleService.save(role);
+        return ResponseEntity.status(HttpStatus.CREATED).body(roleDTO);
+    }
+
+    @GetMapping("/{id}")
     public ResponseEntity<RoleDTO> getRoleById(@PathVariable(value = "id") Long id)
             throws ResourceNotFound {
         Optional<Role> role = roleService.findById(id);
@@ -41,14 +48,7 @@ public class RoleController {
         return ResponseEntity.ok(roleDTO);
     }
 
-    @PostMapping("/role")
-    public ResponseEntity<RoleDTO> create(@RequestBody RoleDTO roleDTO) {
-        Role role = roleMapper.toRole(roleDTO);
-         roleService.save(role);
-        return ResponseEntity.status(HttpStatus.CREATED).body(roleDTO);
-    }
-
-    @PutMapping("/role/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<RoleDTO> update(@PathVariable Long id,	@RequestBody RoleDTO roleDTO) throws ResourceNotFound {
         Role role = roleMapper.toRole(roleDTO);
         Role roleId = roleService.findById(id)
@@ -59,7 +59,7 @@ public class RoleController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(roleDTO);
     }
 
-    @DeleteMapping("/role/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         roleService.deleteById(id);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();

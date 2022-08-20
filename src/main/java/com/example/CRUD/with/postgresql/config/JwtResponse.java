@@ -1,4 +1,4 @@
-package com.example.CRUD.with.postgresql.model;
+package com.example.CRUD.with.postgresql.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

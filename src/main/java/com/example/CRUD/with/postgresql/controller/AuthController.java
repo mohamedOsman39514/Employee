@@ -1,16 +1,13 @@
 package com.example.CRUD.with.postgresql.controller;
 
 
-import com.example.CRUD.with.postgresql.mapStruct.dtos.EmployeeDTO;
-import com.example.CRUD.with.postgresql.mapStruct.mapper.EmployeeMapper;
 import com.example.CRUD.with.postgresql.model.Employee;
-import com.example.CRUD.with.postgresql.model.JwtResponse;
+import com.example.CRUD.with.postgresql.config.JwtResponse;
 import com.example.CRUD.with.postgresql.service.EmployeeService;
 import com.example.CRUD.with.postgresql.util.JwtUtil;
 import io.jsonwebtoken.impl.DefaultClaims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -21,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,18 +32,19 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> createToken(@RequestBody Employee jwtRequest) throws Exception {
+    public ResponseEntity<?> createToken(@RequestBody Employee employee) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    jwtRequest.getEmail(),
-                    jwtRequest.getPassword()));
+                    employee.getEmail(),
+                    employee.getPassword()));
         } catch (BadCredentialsException e) {
             throw new Exception("Error", e);
         }
-        final UserDetails userDetails = userService.loadUserByUsername(jwtRequest.getEmail());
+        final UserDetails userDetails = userService.loadUserByUsername(employee.getEmail());
         final String token = jwtUtil.generateToken(userDetails);
         return ResponseEntity.ok().body(new JwtResponse(token));
     }
+
 
     @RequestMapping(value = "/refreshtoken", method = RequestMethod.GET)
     public ResponseEntity<?> refreshtoken(HttpServletRequest request) throws Exception {
