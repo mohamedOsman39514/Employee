@@ -8,6 +8,9 @@ import com.example.CRUD.with.postgresql.model.PasswordResetToken;
 import com.example.CRUD.with.postgresql.rest.mapper.EmployeeMapperImpl;
 import com.example.CRUD.with.postgresql.service.EmployeeService;
 import com.example.CRUD.with.postgresql.service.PasswordTokenService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/api/v2/employees")
+@Tag( name = "Employees",description ="Rest Api For Employees")
 public class EmployeeController {
 
     @Autowired
@@ -36,11 +40,13 @@ public class EmployeeController {
     private PasswordUtil passwordUtil;
 
     @GetMapping
+    @Operation(summary = "This method is used to get all employees.")
     public ResponseEntity<?> getAllEmployees() {
             List<EmployeeDTO> employeeDTOList = employeeMapper.toEmployeeDTOs(employeeService.getAllEmployees());
             return ResponseEntity.status(HttpStatus.CREATED).body(employeeDTOList);
     }
 
+    @Operation(summary = "This method is used to get employee.")
     @GetMapping("/{id}")
     public ResponseEntity<EmployeeDTO> getDepartmentById(@PathVariable String id)
             throws ResourceNotFound {
@@ -51,6 +57,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/forgetPassword")
+    @Operation(summary = "This method for if user forget password.")
     public ResponseEntity<?> forgetPassword(@RequestBody Employee employee ) throws ResourceNotFound {
         Employee user = employeeService.getEmployeeByEmail(employee.getEmail()).get();
         System.out.println("\n\n\n USER ||  "+user.getEmail()+"\n\n\n");
@@ -66,6 +73,7 @@ public class EmployeeController {
     }
 
     @PutMapping ("/resetpassword/{resetToken}")
+    @Operation(summary = "This method is used to reset password.")
     public ResponseEntity<?> resetPassword(@RequestBody Employee employee, @PathVariable String resetToken){
 
         PasswordResetToken token = passwordTokenService.getResetToken(resetToken).get();
@@ -90,6 +98,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/register")
+    @Operation(summary = "This method is used sign up.")
     public ResponseEntity<EmployeeDTO> createEmployee(@RequestBody EmployeeDTO employeeDTO) {
         Employee employee = employeeMapper.toEmployee(employeeDTO);
         employeeService.createEmployee(employee);
@@ -97,6 +106,7 @@ public class EmployeeController {
     }
 
     @PatchMapping("/updatePassword/{newPassword}")
+    @Operation(summary = "This method is used change password.")
     public ResponseEntity<?> changeUserPassword(@RequestBody Employee employee,@PathVariable String newPassword) {
 
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -111,6 +121,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "This method is used to update employee profile.")
     public ResponseEntity<EmployeeDTO> update(@PathVariable String id, @RequestBody EmployeeDTO employeeDTO) throws ResourceNotFound {
         Employee employee = employeeMapper.toEmployee(employeeDTO);
 
@@ -128,6 +139,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "This method is used to delete employee.")
     public ResponseEntity<?> delete(@PathVariable String id) {
         employeeService.delete(id);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
