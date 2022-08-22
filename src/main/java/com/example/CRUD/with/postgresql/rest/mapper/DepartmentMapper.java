@@ -1,14 +1,10 @@
-package com.example.CRUD.with.postgresql.mapStruct.mapper;
+package com.example.CRUD.with.postgresql.rest.mapper;
 
-import com.example.CRUD.with.postgresql.mapStruct.dtos.DepartmentDTO;
-import com.example.CRUD.with.postgresql.mapStruct.dtos.ProductDTO;
+import com.example.CRUD.with.postgresql.rest.dtos.DepartmentDTO;
 import com.example.CRUD.with.postgresql.model.Department;
-import com.example.CRUD.with.postgresql.model.Product;
-import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface DepartmentMapper {

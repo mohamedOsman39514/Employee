@@ -1,4 +1,4 @@
-package com.example.CRUD.with.postgresql.controller;
+package com.example.CRUD.with.postgresql.rest.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,28 +1,24 @@
-package com.example.CRUD.with.postgresql.controller;
+package com.example.CRUD.with.postgresql.rest.controller;
 
-import com.example.CRUD.with.postgresql.exception.ResourceNotFound;
-import com.example.CRUD.with.postgresql.filter.JwtFilter;
-import com.example.CRUD.with.postgresql.mapStruct.dtos.EmployeeDTO;
-import com.example.CRUD.with.postgresql.mapStruct.mapper.EmployeeMapper;
-import com.example.CRUD.with.postgresql.mapStruct.mapper.EmployeeMapperImpl;
+import com.example.CRUD.with.postgresql.config.password.PasswordUtil;
+import com.example.CRUD.with.postgresql.rest.exception.ResourceNotFound;
+import com.example.CRUD.with.postgresql.rest.dtos.EmployeeDTO;
 import com.example.CRUD.with.postgresql.model.Employee;
-import com.example.CRUD.with.postgresql.model.Role;
+import com.example.CRUD.with.postgresql.model.PasswordResetToken;
+import com.example.CRUD.with.postgresql.rest.mapper.EmployeeMapperImpl;
 import com.example.CRUD.with.postgresql.service.EmployeeService;
-import com.example.CRUD.with.postgresql.util.JwtUtil;
-import io.jsonwebtoken.impl.DefaultClaims;
+import com.example.CRUD.with.postgresql.service.PasswordTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Locale;
+import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -32,17 +28,12 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
-
+    @Autowired
+    private PasswordTokenService passwordTokenService;
     @Autowired
     private EmployeeMapperImpl employeeMapper;
-
     @Autowired
-    private JwtUtil jwtUtil;
-
-    @Autowired
-    private JwtFilter jwtFilter;
-    @Autowired
-    private HttpServletRequest request;
+    private PasswordUtil passwordUtil;
 
     @GetMapping
     public ResponseEntity<?> getAllEmployees() {
@@ -55,9 +46,47 @@ public class EmployeeController {
             throws ResourceNotFound {
         Employee employee = employeeService.getEmployeeByEmail(id)
                 .orElseThrow(() -> new ResourceNotFound("Employee Not Found"));
-        ;
         EmployeeDTO employeeDTO = employeeMapper.toEmployeeDTO(employee);
         return ResponseEntity.ok(employeeDTO);
+    }
+
+    @PostMapping("/forgetPassword")
+    public ResponseEntity<?> forgetPassword(@RequestBody Employee employee ) throws ResourceNotFound {
+        Employee user = employeeService.getEmployeeByEmail(employee.getEmail()).get();
+        System.out.println("\n\n\n USER ||  "+user.getEmail()+"\n\n\n");
+        if (user == null) {
+            throw new ResourceNotFound("Not Found");
+        }
+        String token = UUID.randomUUID().toString();
+        System.out.println("Reset Password:  "+token);
+        passwordTokenService.createPasswordResetTokenForUser(user, token);
+        //mailSender.send(constructResetTokenEmail(getAppUrl(request),
+          //      request.getLocale(), token, user));
+        return ResponseEntity.ok().body(token);
+    }
+
+    @PutMapping ("/resetpassword/{resetToken}")
+    public ResponseEntity<?> resetPassword(@RequestBody Employee employee, @PathVariable String resetToken){
+
+        PasswordResetToken token = passwordTokenService.getResetToken(resetToken).get();
+
+//        BCryptPasswordEncoder passwordEncoder =new BCryptPasswordEncoder();
+//        if(! passwordEncoder.matches(resetToken,token.getToken())){
+//            return ResponseEntity.status(404).body("This reset token not found......");
+//        }
+
+        if(token.getToken().isEmpty()){
+            return ResponseEntity.status(404).body("This reset token not found......");
+        }
+        String result = passwordUtil.validatePasswordResetToken(resetToken);
+        if(result != null){
+          return  ResponseEntity.status(401).body("Reset Token Expired......");
+        }
+        String email = token.getEmployee().getEmail();
+//        Employee employee1 = employeeService.getEmployeeByEmail(email).get();
+        employeeService.updatePassword(email,employee.getPassword());
+
+        return ResponseEntity.status(200).body("the password changed.....");
     }
 
     @PostMapping("/register")

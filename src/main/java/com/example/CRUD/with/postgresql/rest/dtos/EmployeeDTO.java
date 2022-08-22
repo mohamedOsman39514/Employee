@@ -1,4 +1,4 @@
-package com.example.CRUD.with.postgresql.mapStruct.dtos;
+package com.example.CRUD.with.postgresql.rest.dtos;
 
 import com.example.CRUD.with.postgresql.model.Department;
 import com.example.CRUD.with.postgresql.model.Job;

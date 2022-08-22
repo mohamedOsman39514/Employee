@@ -1,11 +1,9 @@
-package com.example.CRUD.with.postgresql.controller;
+package com.example.CRUD.with.postgresql.rest.controller;
 
-import com.example.CRUD.with.postgresql.exception.ResourceNotFound;
-import com.example.CRUD.with.postgresql.mapStruct.dtos.RoleDTO;
-import com.example.CRUD.with.postgresql.mapStruct.mapper.RoleMapper;
-import com.example.CRUD.with.postgresql.mapStruct.mapper.RoleMapperImpl;
-import com.example.CRUD.with.postgresql.model.Employee;
+import com.example.CRUD.with.postgresql.rest.exception.ResourceNotFound;
+import com.example.CRUD.with.postgresql.rest.dtos.RoleDTO;
 import com.example.CRUD.with.postgresql.model.Role;
+import com.example.CRUD.with.postgresql.rest.mapper.RoleMapperImpl;
 import com.example.CRUD.with.postgresql.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

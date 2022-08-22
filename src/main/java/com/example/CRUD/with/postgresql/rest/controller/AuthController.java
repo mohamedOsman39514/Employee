@@ -1,10 +1,10 @@
-package com.example.CRUD.with.postgresql.controller;
+package com.example.CRUD.with.postgresql.rest.controller;
 
 
 import com.example.CRUD.with.postgresql.model.Employee;
-import com.example.CRUD.with.postgresql.config.JwtResponse;
+import com.example.CRUD.with.postgresql.config.jwt.JwtResponse;
 import com.example.CRUD.with.postgresql.service.EmployeeService;
-import com.example.CRUD.with.postgresql.util.JwtUtil;
+import com.example.CRUD.with.postgresql.config.jwt.JwtUtil;
 import io.jsonwebtoken.impl.DefaultClaims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

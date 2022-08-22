@@ -1,6 +1,6 @@
-package com.example.CRUD.with.postgresql.mapStruct.mapper;
+package com.example.CRUD.with.postgresql.rest.mapper;
 
-import com.example.CRUD.with.postgresql.mapStruct.dtos.JobDTO;
+import com.example.CRUD.with.postgresql.rest.dtos.JobDTO;
 import com.example.CRUD.with.postgresql.model.Job;
 import org.mapstruct.Mapper;
 

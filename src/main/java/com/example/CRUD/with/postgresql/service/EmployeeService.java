@@ -1,8 +1,10 @@
 package com.example.CRUD.with.postgresql.service;
 
 import com.example.CRUD.with.postgresql.model.Employee;
+import com.example.CRUD.with.postgresql.model.PasswordResetToken;
 import com.example.CRUD.with.postgresql.model.Role;
 import com.example.CRUD.with.postgresql.repositroy.EmployeeRepository;
+import com.example.CRUD.with.postgresql.repositroy.PasswordTokenRepository;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +30,6 @@ public class EmployeeService implements UserDetailsService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
-
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -51,7 +51,6 @@ public class EmployeeService implements UserDetailsService {
         }
         return authorities;
     }
-
 
     public List<Employee> getAllEmployees() {
         return employeeRepository.findAll();
@@ -79,10 +78,8 @@ public class EmployeeService implements UserDetailsService {
 
     public void updatePassword(String email, String password) {
         Employee employee = employeeRepository.findById(email).get();
-
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodePassword = passwordEncoder.encode(password);
-
         employee.setPassword(encodePassword);
         employeeRepository.save(employee);
     }

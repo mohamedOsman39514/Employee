@@ -1,7 +1,7 @@
 package com.example.CRUD.with.postgresql.config;
 
 
-import com.example.CRUD.with.postgresql.filter.JwtFilter;
+import com.example.CRUD.with.postgresql.config.jwt.JwtFilter;
 import com.example.CRUD.with.postgresql.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

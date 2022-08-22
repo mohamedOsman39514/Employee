@@ -1,10 +1,9 @@
-package com.example.CRUD.with.postgresql.controller;
+package com.example.CRUD.with.postgresql.rest.controller;
 
-import com.example.CRUD.with.postgresql.exception.ResourceNotFound;
-import com.example.CRUD.with.postgresql.mapStruct.dtos.DepartmentDTO;
-import com.example.CRUD.with.postgresql.mapStruct.mapper.DepartmentMapper;
-import com.example.CRUD.with.postgresql.mapStruct.mapper.DepartmentMapperImpl;
+import com.example.CRUD.with.postgresql.rest.exception.ResourceNotFound;
+import com.example.CRUD.with.postgresql.rest.dtos.DepartmentDTO;
 import com.example.CRUD.with.postgresql.model.Department;
+import com.example.CRUD.with.postgresql.rest.mapper.DepartmentMapperImpl;
 import com.example.CRUD.with.postgresql.service.DepartmentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

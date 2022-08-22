@@ -1,4 +1,4 @@
-package com.example.CRUD.with.postgresql.util;
+package com.example.CRUD.with.postgresql.config.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -84,7 +84,6 @@ public class JwtUtil implements Serializable {
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + (5*60*1000)))
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
-
     }
     ////////////////////////////////////////////////////////////////
 

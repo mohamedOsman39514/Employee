@@ -1,10 +1,8 @@
-package com.example.CRUD.with.postgresql.filter;
+package com.example.CRUD.with.postgresql.config.jwt;
 
 import com.example.CRUD.with.postgresql.service.EmployeeService;
-import com.example.CRUD.with.postgresql.util.JwtUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
